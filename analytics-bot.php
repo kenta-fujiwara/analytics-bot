@@ -3,13 +3,13 @@
 require_once 'google-api-php-client/src/Google/autoload.php';
 
 // サービスアカウントのメールアドレス
-$service_account_email = 'analytics-bot@analytics-bot-143204.iam.gserviceaccount.com';
+$service_account_email = 'analytics-bot@analytics-bot-xxxxxxx.iam.gserviceaccount.com';
 
 // 秘密キーファイルの読み込み
-$key = file_get_contents('analytics-bot-e105379956cc.p12');
+$key = file_get_contents('analytics-bot-xxxxxxxxxxxxxxxx.p12');
 
 // プロファイル(ビュー)ID
-$profile = '129347988';
+$profile = 'xxxxxxxxxxxx';
 
 // Googleクライアントのインスタンスを作成
 $client = new Google_Client();
@@ -108,7 +108,7 @@ $ranking = getWeeklyRanking($analytics, $profile);
 //slack
 $url  = 'https://slack.com/api/chat.postMessage';
 $args = [
-  'token'      => '0f82b6f039fd94748543676f16784ff9',
+  'token'      => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
   'channel'    => 'times_fujiken',
   'text'       => $report . "\n" . $ranking,
 ];
