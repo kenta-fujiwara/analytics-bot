@@ -25,12 +25,31 @@ if($client->getAuth()->isAccessTokenExpired()) {
   $client->getAuth()->refreshTokenWithAssertion($cred);
 }
 
-$result = $analytics->data_ga->get(
-  'ga:' . $profile, // アナリティクス ビュー ID
-  '7daysAgo',       // データの取得を開始する日付は7日前
-  'yesterday',      // データの取得を終了する日付は昨日
-  'ga:sessions'     // セッション数を取得する
-);
+function getWeeklyReport($analytics, $profile){
+  // セッション数・PV・平均閲覧ページ数・平均セッション時間・直帰率を取得
+  $results = $analytics->data_ga->get(
+    'ga:' . $profile,
+    '7daysAgo',
+    'yesterday',
+    'ga:sessions,ga:pageviews,ga:pageviewsPerSession,ga:avgSessionDuration,ga:bounceRate'
+  );
 
-// 結果を出力
-echo $result -> rows[0][0];
+  // 取得したデータからレポート部分を抽出
+  $data = $results->rows;
+
+  // 7日前と昨日の日付を取得
+  $start = date("n/d", strtotime("-1 week"));
+  $end   = date("n/d", strtotime("-1 day"));
+
+  // データを整形
+  $report = $start . '〜' . $end . 'のレポート' . "\n";
+  $report .= '訪問数 : ' . $data[0][0] . "\n";
+  $report .= '合計PV : ' . $data[0][1] . "\n";
+  $report .= '平均閲覧ページ数 : ' . round( $data[0][2], 2 ) . 'ページ' . "\n";
+  $report .= '平均滞在時間 : ' . ceil( $data[0][3] ) . '秒' . "\n";
+  $report .= '直帰率 : ' . round( $data[0][4], 1 ) . '%' .  "\n";
+
+  return $report;
+}
+
+$report = getWeeklyReport($analytics, $profile);
