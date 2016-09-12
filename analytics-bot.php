@@ -57,5 +57,5 @@ function getWeeklyRanking($analytics, $profile){
 
 $ranking = getWeeklyRanking($analytics, $profile);
 
-print_r($report);
+print_r($ranking);
 ?>
